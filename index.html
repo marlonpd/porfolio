@@ -727,6 +727,7 @@
       console.log('openModal', index, projects[index]?.name);
       const p = projects[index];
       if (!p) return;
+      // populate content
       document.getElementById('modalTitle').textContent = p.name;
       document.getElementById('modalDesc').textContent = p.desc;
       document.getElementById('modalIframe').src = p.url;
@@ -738,8 +739,37 @@
       const tagsHtml = p.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
       document.getElementById('modalTagsFooter').innerHTML = tagsHtml;
 
-      document.getElementById('modalBackdrop').classList.add('open');
+      // Ensure the backdrop is attached to body to avoid stacking/overflow issues
+      const backdrop = document.getElementById('modalBackdrop');
+      if (backdrop && backdrop.parentNode !== document.body) {
+        document.body.appendChild(backdrop);
+        console.log('moved modalBackdrop to document.body');
+      }
+
+      // Open and then log computed styles and bounding rect for diagnostics
+      backdrop.classList.add('open');
       document.body.style.overflow = 'hidden';
+
+      // Diagnostic logs
+      const modalEl = backdrop.querySelector('.modal');
+      console.log('backdrop.className=', backdrop.className);
+      console.log('modalEl present=', !!modalEl);
+      if (modalEl) {
+        const cs = window.getComputedStyle(modalEl);
+        console.log('modal computed style:', {
+          display: cs.display,
+          position: cs.position,
+          top: cs.top,
+          left: cs.left,
+          transform: cs.transform,
+          zIndex: cs.zIndex,
+          visibility: cs.visibility,
+          opacity: cs.opacity,
+          height: cs.height,
+          maxHeight: cs.maxHeight
+        });
+        console.log('modal bounding rect:', modalEl.getBoundingClientRect());
+      }
     }
 
     function closeModal() {
