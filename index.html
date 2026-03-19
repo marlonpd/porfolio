@@ -329,11 +329,11 @@
 
     /* --- Modal --- */
     .modal-backdrop {
-      position: fixed; inset: 0; z-index: 1000;
+      position: fixed; inset: 0; z-index: 9999;
       background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(8px);
-      display: none; place-items: center; padding: 1rem;
+      display: none; align-items: center; justify-content: center; padding: 1rem;
     }
-    .modal-backdrop.open { display: grid; }
+    .modal-backdrop.open { display: flex; }
     .modal {
       width: min(900px, calc(100vw - 2rem));
       max-height: calc(100vh - 2rem);
@@ -342,7 +342,7 @@
       box-shadow: 0 24px 80px rgba(0,0,0,0.5);
       display: flex; flex-direction: column;
       position: relative;
-      z-index: 1001;
+      z-index: 10000 !important;
       transform: translateZ(0);
     }
     .modal-header {
